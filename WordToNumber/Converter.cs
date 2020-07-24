@@ -114,7 +114,7 @@ namespace WordToNumber
 
         public static long GetNum(string str)
         {
-            string[] words = str.ToLower().Replace(" ", "").SplitBeforeAfter(Enum.GetNames(typeof(suffixes)));
+            string[] words = str.ToLower().Replace(" ", "").Replace("-", "").SplitBeforeAfter(Enum.GetNames(typeof(suffixes)));
             List<long> sums = new List<long>();
             bool lastMult = true;
 
