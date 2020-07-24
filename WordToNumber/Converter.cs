@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace WordToNumber
 {
-    enum suffixes: long
+    enum suffixes : long
     { 
         hundred = 100,
         thousand = 1000,
@@ -16,7 +16,19 @@ namespace WordToNumber
         quadrillion = 1000000000000000
     }
 
-    public static class Convert
+    enum altWords : int
+    { 
+        twen = 2,
+        thir = 3,
+        four = 4,
+        fif = 5,
+        six = 6,
+        seven = 7,
+        eigh = 8,
+        nine = 9
+    }
+
+    public static class Converter
     {
         /// <summary>
         /// The main entry point for the application.
@@ -24,30 +36,83 @@ namespace WordToNumber
         [STAThread]
         static void Main()
         {
-            /*Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());*/
-            while (true)
-            {
-                Console.Write("Input: ");
-                string word = Console.ReadLine();
-                Console.WriteLine(GetNum(word));
-            }
+            Application.Run(new Form1());
         }
 
-        static string GetWord(long num)
+        public static string GetWord(long num)
         {
-            List<string> numPairs = new List<string>();
-            string strum = num.ToString();
+            string word = "";
 
-            int counter = 0;
-            for (int i = strum.Length - 1; i >= 0; i--)
-            { 
-                
+            List<string> pairs = new List<string>();
+            string strum = num.ToString();
+            int inc = 1;
+
+            for (int i = 0; i < strum.Length; i += inc)
+            {
+                if (i == 0)
+                {
+                    int size;
+                    if (strum.Length > 3)
+                    {
+                        size = strum.Length % 3;
+                        if (size == 0)
+                        {
+                            size = 3;
+                        }
+                    }
+                    else
+                    {
+                        size = strum.Length;
+                    }
+                    pairs.Add(strum.Substring(i, size));
+                    inc = size;
+                }
+                else
+                {
+                    var size = 3;
+                    pairs.Add(strum.Substring(i, size));
+                    inc = size;
+                }
+
+                if (inc == 0)
+                {
+                    return "";
+                }
             }
+
+            for (int i = 0; i < pairs.Count; i++)
+            {
+                if (long.Parse(pairs[i]) > 0)
+                {
+                    if (pairs[i].Length == 3)
+                    {
+                        if (long.Parse(pairs[i][0].ToString()) != 0)
+                        {
+                            word += " " + GetDoubleDigitNumToWord(long.Parse(pairs[i][0].ToString())) + " hundred " + GetDoubleDigitNumToWord(long.Parse(pairs[i].Substring(1, 2)));
+                        }
+                        else
+                        {
+                            word += " " + GetDoubleDigitNumToWord(long.Parse(pairs[i].Substring(1, 2)));
+                        }
+                    }
+                    else
+                    {
+                        word += " " + GetDoubleDigitNumToWord(long.Parse(pairs[i]));
+                    }
+
+                    if (pairs.Count - (i + 1) > 0)
+                    {
+                        word += " " + Enum.GetNames(typeof(suffixes))[pairs.Count - (i + 1)];
+                    }
+                }
+            }
+
+            return word.Trim();
         }
 
-        static long GetNum(string str)
+        public static long GetNum(string str)
         {
             string[] words = str.ToLower().Replace(" ", "").SplitBeforeAfter(Enum.GetNames(typeof(suffixes)));
             List<long> sums = new List<long>();
@@ -147,6 +212,94 @@ namespace WordToNumber
             return (long)val;
         }
 
+        static string GetDoubleDigitNumToWord(long num)
+        {
+            string str = num.ToString();
+
+            switch (str[0])
+            {
+                case '1':
+                    if (str.Length == 1)
+                    {
+                        return "one";
+                    }
+                    else if(str.Length == 2)
+                    {
+                        switch (str[1])
+                        {
+                            case '0':
+                                return "ten";
+                            case '1':
+                                return "eleven";
+                            case '2':
+                                return "twelve";
+                            default:
+                                string word = ((altWords)int.Parse(str[1].ToString())).ToString();
+                                return word + "teen";
+                        }
+                    }
+                    break;
+                case '2':
+                    if (str.Length == 1)
+                    {
+                        return "two";
+                    }
+                    break;
+                case '3':
+                    if (str.Length == 1)
+                    {
+                        return "three";
+                    }
+                    break;
+                case '4':
+                    if (str.Length == 1)
+                    {
+                        return "four";
+                    }
+                    break;
+                case '5':
+                    if (str.Length == 1)
+                    {
+                        return "five";
+                    }
+                    break;
+                case '6':
+                    if (str.Length == 1)
+                    {
+                        return "six";
+                    }
+                    break;
+                case '7':
+                    if (str.Length == 1)
+                    {
+                        return "seven";
+                    }
+                    break;
+                case '8':
+                    if (str.Length == 1)
+                    {
+                        return "eight";
+                    }
+                    break;
+                case '9':
+                    if (str.Length == 1)
+                    {
+                        return "nine";
+                    }
+                    break;
+            }
+
+            if (str.Length == 2)
+            {
+                string word = ((altWords)int.Parse(str[0].ToString())).ToString();
+                return word + "ty" + "-" + GetDoubleDigitNumToWord(int.Parse(str[1].ToString()));
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         static long GetDoubleDigitWordToNum(string str)
         {
             List<int> numsToAdd = new List<int>();
@@ -225,3 +378,28 @@ namespace WordToNumber
         }
     }
 }
+
+/*switch (str[str.Length - 1])
+                        {
+                            case '0':
+                                return "ten";
+                            case '1':
+                                return "eleven";
+                            case '2':
+                                return "twelve";
+                            case '3':
+                                return "thirteen";
+                            case '4':
+                                return "fourteen";
+                            case '5':
+                                return "fifteen";
+                            case '6':
+                                return "sixteen";
+                            case '7':
+                                return "seventeen";
+                            case '8':
+                                return "eighteen";
+                            case '9':
+                                return "nineteen";
+                        }
+*/
