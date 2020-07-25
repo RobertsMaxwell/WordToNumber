@@ -378,28 +378,3 @@ namespace WordToNumber
         }
     }
 }
-
-/*switch (str[str.Length - 1])
-                        {
-                            case '0':
-                                return "ten";
-                            case '1':
-                                return "eleven";
-                            case '2':
-                                return "twelve";
-                            case '3':
-                                return "thirteen";
-                            case '4':
-                                return "fourteen";
-                            case '5':
-                                return "fifteen";
-                            case '6':
-                                return "sixteen";
-                            case '7':
-                                return "seventeen";
-                            case '8':
-                                return "eighteen";
-                            case '9':
-                                return "nineteen";
-                        }
-*/

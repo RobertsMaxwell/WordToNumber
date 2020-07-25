@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 using WordToNumber;
 
 namespace WordToNumber
@@ -89,6 +90,84 @@ namespace WordToNumber
         private void InitializeInputs()
         {
             wordButton.Checked = true;
+
+            lightMode.Checked = true;
+            lightMode_Click(null, null);
+        }
+
+        private void lightMode_Click(object sender, EventArgs e)
+        {
+            if (lightMode.Checked)
+            {
+                darkMode.Checked = false;
+                darkMode.Visible = true;
+                lightMode.Visible = false;
+
+                Color lightColor = Color.White;
+
+                menuStrip1.BackColor = lightColor;
+                this.BackColor = lightColor;
+                input.BackColor = lightColor;
+                result.BackColor = lightColor;
+                start.BackColor = lightColor;
+
+                Font regularFont = new Font(convertLabel.Font, FontStyle.Regular);
+
+                convertLabel.ForeColor = Color.Black;
+                convertLabel.Font = regularFont;
+                toLabel.ForeColor = Color.Black;
+                toLabel.Font = regularFont;
+                resultLabel.ForeColor = Color.Black;
+                resultLabel.Font = regularFont;
+                start.ForeColor = Color.Black;
+                start.Font = regularFont;
+                menuStrip1.ForeColor = Color.Black;
+                menuStrip1.Font = regularFont;
+                wordButton.ForeColor = Color.Black;
+                wordButton.Font = regularFont;
+                numberButton.ForeColor = Color.Black;
+                numberButton.Font = regularFont;
+                input.ForeColor = Color.Black;
+                result.ForeColor = Color.Black;
+            }
+        }
+
+        private void darkMode_Click(object sender, EventArgs e)
+        {
+            if (darkMode.Checked)
+            {
+                lightMode.Checked = false;
+                lightMode.Visible = true;
+                darkMode.Visible = false;
+
+                ColorConverter conv = new ColorConverter();
+                Color darkColor = (Color)conv.ConvertFromString("#162447");
+                Color lighterDarkColor = (Color)conv.ConvertFromString("#1f4068");
+
+                this.BackColor = darkColor;
+                menuStrip1.BackColor = lighterDarkColor;
+                input.BackColor = lighterDarkColor;
+                result.BackColor = lighterDarkColor;
+                start.BackColor = lighterDarkColor;
+
+                Font boldFont = new Font(convertLabel.Font, FontStyle.Bold);
+
+                convertLabel.ForeColor = Color.White;
+                convertLabel.Font = boldFont;
+                toLabel.ForeColor = Color.White;
+                toLabel.Font = boldFont;
+                resultLabel.ForeColor = Color.White;
+                resultLabel.Font = boldFont;
+                start.ForeColor = Color.White;
+                start.Font = boldFont;
+                wordButton.ForeColor = Color.White;
+                wordButton.Font = boldFont;
+                numberButton.ForeColor = Color.White;
+                numberButton.Font = boldFont;
+                menuStrip1.ForeColor = Color.White;
+                input.ForeColor = Color.White;
+                result.ForeColor = Color.White;
+            }
         }
     }
 }
